@@ -7,7 +7,7 @@
 This repository contains the complete reference implementation, empirical benchmark suite, and artifact generation scripts for the research paper:
 
 > **"NetSentry-Aegis: An AI-Driven Zero-Trust Cyber Defense Framework for Intelligent IoT and Edge Networks"**  
-> *Authors: Md. Hridoy Joarder, Dr. Md. Sobuz Mia*  
+> *Authors: Hridoy Chandra Sarker (ug2102019@cse.pstu.ac.bd), Prof. Dr. Md. Samsuzzaman (sobuz@pstu.ac.bd)*  
 > *Department of Computer Science and Engineering, Patuakhali Science and Technology University (PSTU)*
 
 NetSentry-Aegis operationalizes the Zero-Trust mandate of *"never trust implicitly, continuously verify"* directly on resource-constrained edge gateways. It pairs lightweight machine-learning threat inference with an asymmetric dynamic trust engine and a 6-tier graduated network policy enforcement layer.
@@ -174,10 +174,10 @@ This project is licensed under the terms of the [MIT License](LICENSE).
 If you use this reference implementation, code, or benchmark data in your academic work, please cite:
 
 ```bibtex
-@article{joarder2026netsentry,
+@article{sarker2026netsentry,
   title={NetSentry-Aegis: An AI-Driven Zero-Trust Cyber Defense Framework for Intelligent IoT and Edge Networks},
-  author={Joarder, Md. Hridoy and Mia, Md. Sobuz},
-  journal={Preprint / Under Review},
+  author={Sarker, Hridoy Chandra and Samsuzzaman, Md.},
+  journal={IEEE Internet of Things Journal / Under Review},
   year={2026}
 }
 ```

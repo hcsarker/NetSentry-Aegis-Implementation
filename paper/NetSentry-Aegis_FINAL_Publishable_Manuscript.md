@@ -1,10 +1,12 @@
 # NetSentry-Aegis: An AI-Driven Zero-Trust Cyber Defense Framework for Intelligent IoT and Edge Networks
 
-**Authors:** Md. Hridoy Joarder¹, Dr. Md. Sobuz Mia²  
-**¹** Department of Computer Science and Engineering, Patuakhali Science and Technology University, Patuakhali, Bangladesh  
-**²** Department of Computer Science and Engineering, Patuakhali Science and Technology University, Patuakhali, Bangladesh  
+**Authors:** Hridoy Chandra Sarker¹*, Dr. Md. Samsuzzaman²  
+¹ Department of Computer Science and Engineering, Faculty of Computer Science and Engineering, Patuakhali Science and Technology University, Patuakhali, Bangladesh  
+*Email:* ug2102019@cse.pstu.ac.bd, hridoy.pstu.cse19@gmail.com  
+² Professor, Department of Computer and Communication Engineering, Faculty of Computer Science and Engineering, Patuakhali Science and Technology University, Patuakhali, Bangladesh  
+*Email:* sobuz@pstu.ac.bd  
 
-**Corresponding Author:** [Author Email]  
+*Corresponding Author:* Hridoy Chandra Sarker (ug2102019@cse.pstu.ac.bd)  
 **Target Venue:** IEEE Internet of Things Journal / IEEE Transactions on Dependable and Secure Computing  
 **Manuscript Status:** Full Research Paper — Comprehensive Cross-Benchmark IoT Realization  
 
