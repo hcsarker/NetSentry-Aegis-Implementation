@@ -1,0 +1,79 @@
+{
+  "Random Forest": {
+    "model": "Random Forest",
+    "accuracy": 0.774041873669269,
+    "precision": 0.967839439003748,
+    "recall": 0.6237824359074262,
+    "f1": 0.7586239575435937,
+    "roc_auc": 0.9637124284320566,
+    "false_positive_rate": 0.027391617753063535,
+    "confusion_matrix": {
+      "tn": 9445,
+      "fp": 266,
+      "fn": 4828,
+      "tp": 8005
+    },
+    "latency_ms": 33.46190788333479,
+    "latency_std_ms": 2.4418506266100866,
+    "train_time_s": 12.1877594999969,
+    "model_size_kb": 4187.244140625
+  },
+  "XGBoost": {
+    "model": "XGBoost",
+    "accuracy": 0.7979506742370476,
+    "precision": 0.9684246265278407,
+    "recall": 0.6667965401698746,
+    "f1": 0.7897918685680003,
+    "roc_auc": 0.9712474828633376,
+    "false_positive_rate": 0.028730305838739572,
+    "confusion_matrix": {
+      "tn": 9432,
+      "fp": 279,
+      "fn": 4276,
+      "tp": 8557
+    },
+    "latency_ms": 1.345963933330495,
+    "latency_std_ms": 0.11972221758324504,
+    "train_time_s": 9.837970100023085,
+    "model_size_kb": 237.6494140625
+  },
+  "Logistic Regression": {
+    "model": "Logistic Regression",
+    "accuracy": 0.7541696238466998,
+    "precision": 0.9176308855539008,
+    "recall": 0.6241720564170498,
+    "f1": 0.7429737501159447,
+    "roc_auc": 0.7915773490435577,
+    "false_positive_rate": 0.07403974873854392,
+    "confusion_matrix": {
+      "tn": 8992,
+      "fp": 719,
+      "fn": 4823,
+      "tp": 8010
+    },
+    "latency_ms": 0.12390073333032585,
+    "latency_std_ms": 0.0023873780135869925,
+    "train_time_s": 3.580301700014388,
+    "model_size_kb": 1.5625
+  },
+  "Autoencoder (unsupervised)": {
+    "model": "Autoencoder (unsupervised)",
+    "accuracy": 0.8355216465578424,
+    "precision": 0.9288466961180563,
+    "recall": 0.7700459752201356,
+    "f1": 0.8420245398773006,
+    "roc_auc": 0.9542912271720438,
+    "false_positive_rate": 0.07795283698898156,
+    "confusion_matrix": {
+      "tn": 8954,
+      "fp": 757,
+      "fn": 2951,
+      "tp": 9882
+    },
+    "latency_ms": 0.13081516666473667,
+    "latency_std_ms": 0.007112599335468874,
+    "train_time_s": 10.972337299986975,
+    "model_size_kb": 410.0029296875,
+    "reconstruction_threshold": 0.03336807717625004
+  }
+}

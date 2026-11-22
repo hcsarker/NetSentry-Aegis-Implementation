@@ -1,0 +1,26 @@
+{
+  "Random Forest": {
+    "tn": 9445,
+    "fp": 266,
+    "fn": 4828,
+    "tp": 8005
+  },
+  "XGBoost": {
+    "tn": 9432,
+    "fp": 279,
+    "fn": 4276,
+    "tp": 8557
+  },
+  "Logistic Regression": {
+    "tn": 8992,
+    "fp": 719,
+    "fn": 4823,
+    "tp": 8010
+  },
+  "Autoencoder (unsupervised)": {
+    "tn": 8954,
+    "fp": 757,
+    "fn": 2951,
+    "tp": 9882
+  }
+}

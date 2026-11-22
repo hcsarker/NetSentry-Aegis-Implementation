@@ -1,0 +1,7 @@
+{
+  "n_trials": 5000,
+  "attack_detection_and_escalation_rate": 0.6631393298059964,
+  "normal_false_restriction_rate": 0.024942263279445726,
+  "attack_total": 2835,
+  "normal_total": 2165
+}

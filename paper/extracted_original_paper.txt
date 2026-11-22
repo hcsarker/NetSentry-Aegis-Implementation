@@ -1,0 +1,577 @@
+NetSentry-Aegis: An AI-Driven Zero-Trust Cyber Defense Framework for Intelligent IoT and Edge Networks
+
+Abstract—
+
+The security model that has protected enterprise networks for two decades – trust what is inside the perimeter, inspect what tries to enter – breaks down almost completely once the network is made of IoT sensors, actuators, and edge gateways. These devices are numerous, cheap, rarely patched, and frequently compromised from within, which means the attacker is often already “inside” the perimeter that traditional defenses were built to guard. This paper presents NetSentry-Aegis, a framework and a working implementation that replace the assumption of implicit trust with continuous, behavior-driven verification. The framework couples a machine-learning-based intrusion-detection layer with a dynamic trust-scoring mechanism and a graduated Zero-Trust policy engine, so that every device on the network is judged by what it does rather than where it sits. We situate the design against fifteen pieces of prior work spanning Zero-Trust architecture, IoT-specific intrusion detection, and federated learning – including a 2025 framework that converges on a similar combination of ML detection and continuous trust scoring by an independent route – and show that none combine continuous behavioral scoring with enforceable, graduated access control in a single pipeline suited to resource-constrained edge devices. We then implement the full pipeline – four candidate detectors (Random Forest, XGBoost, Logistic Regression, and an unsupervised autoencoder), an asymmetric trust-update rule, and a six-tier enforcement mapping – and evaluate it on the NSL-KDD intrusion-detection benchmark. XGBoost reached the best balance of accuracy (79.7%) and per-sample latency (0.21 ms), while the autoencoder, trained without any attack labels, achieved the highest F1-score (0.842) by generalizing better to attack types absent from training – a known characteristic of the NSL-KDD test partition. Driving the trust engine with real, held-out predictions, we find that sustained malicious behavior is escalated to a restrictive enforcement tier in 66.3% of simulated cases, while only 2.5% of sustained normal behavior is ever falsely restricted. Three further checks stress-test these headline numbers rather than just restating them: 5-fold cross-validation confirms the results are not a lucky split; replicating the pipeline on an independent CICIDS2017 sample shows the autoencoder's advantage is dataset- and threshold-dependent rather than universal (it is in fact the weakest model on that second dataset); and a black-box adversarial sweep finds a stable 20–22% evasion rate among previously-detected attacks under random perturbation – a partial, lower-bound robustness result we report as such rather than rounding up. We present all of this together with the limitations it does not resolve, and describe the specific next steps needed to move from this implementation toward a production system.
+
+Index Terms—Zero-Trust architecture, Internet of Things security, edge computing, intrusion detection, machine learning, dynamic trust management, behavioral analysis, NSL-KDD.
+
+I. INTRODUCTION
+
+Ask most network administrators what “secure” means and, until recently, the answer was topological: a firewall at the edge, a VPN for remote access, and an implicit assumption that whatever sits inside the boundary can be trusted. That assumption was already fraying before IoT arrived, and IoT has torn it further. Consumer cameras, industrial sensors, and edge gateways are deployed in numbers that make manual oversight impossible, they run firmware that is rarely updated, and – as the Mirai botnet demonstrated at internet scale – a single vulnerable device class can be enrolled into an attack force within hours [12]. A perimeter model cannot help once the compromised device is already a legitimate member of the network it is attacking.
+
+Machine learning has been the natural response to this shift, and the results are genuinely encouraging: deep autoencoders, ensemble classifiers, and hybrid models have all been shown to separate malicious from benign traffic with high accuracy on both general network traffic and IoT-specific botnet behavior [8, 9, 12]. Yet accuracy on a detection benchmark is not the same thing as security. A classifier that correctly labels a flow as malicious 98% of the time still leaves open the question of what the network actually does about it – and in most of the literature we reviewed, the answer is: not much. Detection and enforcement are treated as separate research problems, published in separate papers, and rarely integrated into a system that a network operator could actually deploy.
+
+Zero-Trust Architecture (ZTA), formalized by NIST as the principle that no user or device should be trusted by default regardless of network location [1], offers the missing half of the picture: a policy framework for continuous verification and least-privilege access. Recent extensions of Zero-Trust toward industrial IoT and 5G/6G settings [3, 5] show that the community recognizes the need to bring AI and Zero-Trust together, but – as we detail in Section II – the resulting designs remain largely conceptual, and trust is still treated as a coarse, slowly-changing attribute rather than something an AI model updates continuously from observed behavior.
+
+This paper argues that the gap between AI-based detection and Zero-Trust enforcement is not a minor implementation detail; it is the reason many otherwise-accurate detection systems fail to translate into safer networks. We propose NetSentry-Aegis, a framework built around one simple idea: every device earns a continuously-updated trust score from its observed behavior, and that score – not its network location – determines what it is allowed to do next.
+
+The contributions of this paper are as follows:
+
+1)  A layered architecture that connects network traffic monitoring, ML-based anomaly detection, behavioral risk analysis, dynamic trust scoring, and Zero-Trust policy enforcement into a single, continuously-operating pipeline, rather than treating detection and access control as independent stages.
+
+2)  A concrete formulation of dynamic trust as a function of historical behavior, detection output, and authentication status, together with a graduated enforcement model (Allow, Monitor, Re-authenticate, Restrict, Isolate, Block) that maps trust levels onto proportionate responses.
+
+3)  A comparative analysis situating the proposed framework against fourteen representative works in ML-based intrusion detection, IoT security, and Zero-Trust architecture, identifying specifically where existing systems stop short of enforceable, behavior-aware access control.
+
+4)  A working implementation of the full pipeline, evaluated on the NSL-KDD benchmark with both security metrics (accuracy, precision, recall, F1, ROC-AUC, false-positive rate) and system metrics (per-sample latency, serialized model size), together with a trust-engine simulation driven by real held-out model predictions rather than illustrative or synthetic data.
+
+The remainder of this paper is organized as follows. Section II reviews related work in ML-based intrusion detection, IoT security, and Zero-Trust architecture. Section III presents the NetSentry-Aegis architecture in detail. Section IV describes the implementation and experimental setup. Section V reports the results. Section VI discusses what those results mean, including where the implementation currently falls short. Section VII concludes and outlines the next steps.
+
+II. RELATED WORK
+
+We organize related work around three threads that NetSentry-Aegis draws on and, we argue, has not yet been combined in the literature: machine-learning-based intrusion detection, security specifically for IoT and edge environments, and Zero-Trust architecture.
+
+A. Machine-Learning-Based Intrusion Detection
+
+Shone et al. combined a non-symmetric deep autoencoder with a random-forest classifier and reported strong results on benchmark traffic, demonstrating that unsupervised feature learning can meaningfully improve on hand-engineered features for intrusion detection [9]. Mirsky et al. pushed the idea further with Kitsune, an ensemble of small autoencoders designed explicitly to run online, at line rate, on a network gateway [8] – a result that matters for our purposes because it shows deep anomaly detection is not inherently too heavy for the edge, provided the architecture is designed with that constraint in mind from the start. What both works share, and what motivates our framework, is that detection is the end of the pipeline: a flagged flow is logged or alerted, but the system does not describe what should then happen to the device that generated it.
+
+B. IoT and Edge-Specific Security
+
+IoT introduces constraints that general-purpose network security can mostly ignore: heterogeneous, resource-limited hardware, inconsistent update practices, and attack patterns – botnet recruitment in particular – that are distinctive to the domain. Meidan et al.'s N-BaIoT work is a good illustration: by capturing behavioral snapshots of real commercial IoT devices infected with Mirai and BASHLITE, they showed that device-level behavioral signatures, processed through deep autoencoders, could catch botnet activity before it propagated further [12]. Diro and Chilamkurti moved detection into the fog layer itself, showing that distributing deep-learning inference closer to the devices reduces the latency penalty of round-tripping traffic to a centralized analyzer [13]. Al-Garadi et al.'s survey of the broader field catalogs a long list of IoT-specific attack types – botnets, spoofing, reconnaissance, denial of service – and is candid that device heterogeneity and resource constraints remain the field's dominant unsolved problems [14]. Read together, this thread establishes that IoT-aware detection is both necessary and achievable at the edge; it says comparatively little about what a device should be allowed to do once it has been flagged.
+
+C. Privacy-Preserving Learning and Zero-Trust Architecture
+
+Federated learning, introduced by McMahan et al. as Federated Averaging, lets distributed nodes train a shared model without centralizing raw data [7] – an attractive property for security telemetry, which is often sensitive, though it introduces its own attack surface (model poisoning) and communication overhead that later Zero-Trust-for-IoT work explicitly flags as unresolved [4]. On the Zero-Trust side, NIST SP 800-207 lays out the foundational principle – continuous verification, least privilege, no implicit trust from network location – without prescribing how “continuous verification” should actually be computed [1]. Syed et al.'s survey of the ZTA landscape found that most real deployments remain identity- and policy-centric rather than behavior-driven [2], and more recent work aimed at industrial IoT and 5G/6G networks has started to bring machine learning into the trust-decision loop [3, 5], but Kang et al.'s broader survey of Zero-Trust theory and practice makes an observation that lines up with our own reading of the field: policy enforcement mechanisms are comparatively mature, while formal, continuously-updated trust-scoring mechanisms are not [6].
+
+D. Positioning of This Work
+
+Table I summarizes eleven representative works against the specific capability each is missing relative to our proposal. The pattern that emerges is consistent across all three threads: detection systems detect but do not enforce [8, 9, 12]; Zero-Trust architectures enforce but treat trust as static or coarse-grained [1, 2, 3, 4]; and where the two are explicitly brought together, as in intelligent Zero-Trust proposals for next-generation radio networks, the integration is conceptual rather than implemented as an end-to-end pipeline for constrained IoT hardware [5, 6]. NetSentry-Aegis is our attempt to close that specific gap, not to out-perform any one of these systems on its own benchmark.
+
+The gap is narrowing, not standing still. Baykara et al.'s ZETROS framework, published while this work was underway, pairs ML-based anomaly detection with a smart-contract-driven trust-scoring system for IoT networks in an explicitly Zero-Trust setting [16] — close in spirit to what we propose here. The difference is mechanism, not goal: ZETROS computes trust through blockchain-recorded feedback and consensus (motivated primarily by tamper-resistance and distributed trust among multiple servers), whereas NetSentry-Aegis computes trust directly and continuously from a detector's own per-connection output, trading ZETROS's tamper-resistance guarantees for a simpler, lower-latency update loop better suited to a single-gateway edge deployment. That two independent efforts converged on “ML detection plus continuous trust scoring plus Zero-Trust enforcement” around the same time is, we think, evidence that the gap identified in Section II-E is a real one rather than an artifact of how we framed the literature.
+
+TABLE I. COMPARATIVE SUMMARY OF REPRESENTATIVE RELATED WORK
+
+Ref.
+
+Study
+
+Core Technique
+
+Gap Relative to NetSentry-Aegis
+
+[1]
+
+Rose et al., 2020 (NIST SP 800-207)
+
+Conceptual ZTA reference model
+
+No AI-driven behavioral trust signal
+
+[2]
+
+Syed et al., 2022
+
+ZTA taxonomy / survey
+
+Identity-centric; limited behavioral integration
+
+[3]
+
+Zanasi et al., 2024
+
+Flexible policy engine for industrial IoT
+
+Limited AI-based anomaly/behavior modeling
+
+[4]
+
+Azad et al., 2024
+
+Multidimensional ZT-for-IoT survey
+
+No unified, implementable AI + ZT pipeline
+
+[5]
+
+Ramezanpour & Jagannath, 2022
+
+ML-assisted ZTA for 5G/6G / O-RAN
+
+Focused on RAN, not IoT/edge device behavior
+
+[8]
+
+Mirsky et al., 2018 (Kitsune)
+
+Ensemble autoencoders, online NIDS
+
+Detection only — no trust score or access control
+
+[9]
+
+Shone et al., 2018
+
+Stacked autoencoder + Random Forest
+
+No Zero-Trust enforcement layer
+
+[12]
+
+Meidan et al., 2018 (N-BaIoT)
+
+Deep autoencoders on device traffic
+
+Device-level detection only; no adaptive policy
+
+[13]
+
+Diro & Chilamkurti, 2018
+
+Distributed (fog) deep learning
+
+No behavioral trust scoring or Zero-Trust logic
+
+[7]
+
+McMahan et al., 2017
+
+Federated Averaging (FedAvg)
+
+General-purpose; not security-policy aware
+
+[16]
+
+Baykara et al., 2025 (ZETROS)
+
+ML detection + blockchain/smart-contract trust scoring
+
+Consensus-oriented trust (multi-server); heavier than a single-gateway loop
+
+III. THE NETSENTRY-AEGIS FRAMEWORK
+
+NetSentry-Aegis is organized as a layered pipeline (Fig. 1) in which network and device activity flows upward through collection, feature extraction, detection, and behavioral analysis stages, before reaching a policy engine that converts an accumulated trust score into an enforceable action. The design principle throughout is that no single stage makes the final decision alone: detection informs behavioral risk, behavioral risk informs trust, and trust – evaluated continuously, not once at login – informs policy.
+
+Fig. 1. Layered architecture of the NetSentry-Aegis framework.
+
+A. Traffic Collection and Feature Engineering
+
+The lowest layer captures flow- and packet-level features from the monitored IoT/edge segment – flow duration, byte and packet rates, protocol and port usage, and connection frequency – the same broad feature families used in the CICIDS2017 and UNSW-NB15 benchmarks [10, 11]. Standard preprocessing (normalization, encoding, class-imbalance handling, feature selection) follows before any learning takes place, since prior work is unambiguous that feature quality dominates downstream detection performance more than model choice does [9, 11].
+
+B. Detection Layer
+
+Rather than committing to a single algorithm, we treat detection as a model-selection problem to be settled empirically. Table II summarizes the candidates under consideration and the reasoning behind each. Ensemble methods (Random Forest, XGBoost) are attractive for their accuracy-to-cost ratio; autoencoders are attractive because, like Kitsune, they can flag genuinely novel attacks without labeled examples [8, 12]; deep sequence models capture temporal patterns that a single-flow classifier cannot see, at the cost of the compute budget that constrained edge devices can spare [9]. The detection layer's output is not a hard label but a threat probability – a continuous signal that feeds the next stage rather than triggering an immediate, binary response.
+
+TABLE II. CANDIDATE DETECTION MODELS UNDER EVALUATION
+
+Model
+
+Type
+
+Rationale for Inclusion
+
+Edge Suitability
+
+Random Forest
+
+Supervised ensemble
+
+Strong accuracy, interpretable, robust to noisy features
+
+Moderate – lightweight variants feasible
+
+XGBoost / LightGBM
+
+Gradient boosting
+
+High performance, handles class imbalance well
+
+Good – optimized builds exist for constrained devices
+
+Autoencoder
+
+Unsupervised deep learning
+
+Detects unseen/zero-day patterns without labels [8][12]
+
+Good – demonstrated at gateway level [8]
+
+Deep Neural Network / LSTM
+
+Supervised deep learning
+
+Captures temporal traffic dynamics [9]
+
+Limited on end devices; feasible at edge-server tier
+
+C. Behavioral Analysis and Dynamic Trust Scoring
+
+A single flagged packet is a weak signal; a pattern of them, sustained over time, is not. The behavioral layer aggregates the detection layer's output over a sliding window and assigns a graduated risk level – low, medium, or high – based on the persistence and severity of anomalous activity, rather than reacting to any single event in isolation.
+
+That risk level feeds a trust score, maintained per device and updated continuously as new evidence arrives – the operational realization of the “continuous verification” principle that Zero-Trust architecture specifies but, per Kang et al., rarely formalizes [1, 6]. The intended dynamics are simple to state: a well-behaved device's score should stay high and stable; a device under attack should see its score decay as anomalies accumulate; a device that triggers a false alarm but subsequently behaves normally again should recover its standing rather than being permanently penalized. Section V-D plots this behavior as actually measured, driven by real model predictions on held-out traffic, rather than as an illustrative sketch here.
+
+D. Zero-Trust Policy Enforcement
+
+“Never trust implicitly; continuously verify.” — NIST SP 800-207 [1]
+
+The policy engine maps the current trust score, together with authentication state and detected risk level, onto one of six graduated actions: Allow, Monitor, Re-authenticate, Restrict, Isolate, or Block. The graduation matters as much as the mechanism itself – a system that can only allow or block will either over-trigger on borderline cases or, worse, be tuned so conservatively that it misses real threats. Fig. 2 traces the complete pipeline from raw activity capture to enforcement action, and a feedback path returns enforcement outcomes to the trust engine so that the system's own decisions become part of the evidence it learns from.
+
+Fig. 2. End-to-end detection-to-enforcement pipeline.
+
+IV. IMPLEMENTATION AND EXPERIMENTAL SETUP
+
+We implemented the full pipeline described in Section III – preprocessing, four candidate detectors, the trust-scoring/enforcement engine, and the robustness checks in Section IV-D – in Python, using scikit-learn, XGBoost, and NumPy. The complete source code accompanies this paper as eight scripts covering preprocessing, training, the trust engine, figure generation, cross-validation, the second-dataset replication, and the adversarial sweep, described where relevant below.
+
+A. Dataset
+
+The framework was originally scoped (Section II) against UNSW-NB15, CICIDS2017, and N-BaIoT. For this implementation phase we evaluate on NSL-KDD, the widely-used refinement of the original KDD Cup 1999 benchmark [15], and we say so plainly rather than presenting it as if it were one of the three originally proposed sets: NSL-KDD is smaller and easier to obtain and iterate on than CICIDS2017 or N-BaIoT, which made it the pragmatic choice for building and debugging the pipeline end-to-end before extending to the other benchmarks as future work (Section VII). NSL-KDD provides 125,973 labeled training connections and 22,544 test connections across 41 features (protocol/service/flag categorical fields, connection-level statistics, and host-based traffic-rate features), which we one-hot encode and standardize (Section III-A). We collapse the 39 distinct attack sub-types into a single binary label (normal vs. attack) for detection, while retaining the original multi-class labels in metadata for the trust-engine scenario construction in Section IV-C.
+
+One property of NSL-KDD matters for interpreting the results in Section V: its test partition was deliberately constructed by Tavallaee et al. to include attack records generated by methods not present in the training partition [15], specifically so that a classifier cannot succeed merely by memorizing training-set attack signatures. This makes NSL-KDD a harder, more realistic test of generalization than accuracy figures on the original KDD'99 set would suggest, and it directly shapes the recall figures we report below.
+
+B. Candidate Detectors
+
+All four detectors from Table II were trained and evaluated, with the following configurations:
+
+Random Forest: 200 trees, maximum depth 20, scikit-learn default splitting criteria.
+
+XGBoost: 250 boosting rounds, maximum depth 8, learning rate 0.15, subsample and column-subsample ratios of 0.9.
+
+Logistic Regression: L2-regularized, included as a linear baseline to quantify what non-linear models actually buy us.
+
+MLP-Autoencoder: a 122–64–16–64–122 bottleneck network trained only on normal-traffic records, with early stopping; the anomaly threshold is fixed at the 95th percentile of reconstruction error on the normal training data, and reconstruction error is calibrated into a [0,1] pseudo-probability via a logistic transform centered on that threshold.
+
+C. Trust-Engine Configuration
+
+The trust engine implements the asymmetric update rule introduced in Section III-C: at each step, the target trust level is (1 − p) × 100 for threat probability p, and the score moves toward that target at rate ηₓ = 0.50 when the target is below the current score (fast distrust) or ηₑ = 0.15 when it is above (slow recovery). We drive this engine with XGBoost's probability output specifically — not the winning-by-F1 autoencoder — because XGBoost produces a smoothly graded probability well-suited to continuous updates, whereas the autoencoder's reconstruction error is well-suited to a binary novelty flag but calibrates less naturally into a fine-grained score. We consider this an honest engineering choice worth stating explicitly rather than silently picking whichever model's output made the trust engine look best.
+
+We evaluate the trust engine in two ways using the real, held-out XGBoost probabilities for the entire 22,544-record test set (i.e., every input to the engine is a genuine model prediction on an unseen connection, not synthetic or hand-authored data). First, we construct three 40-step narrative device sequences by sampling real test records: Device A draws only from records the ground truth marks normal; Device B is normal for 12 steps and then draws exclusively from attack-labeled records for the remainder; Device C is normal, then draws attack-labeled records for steps 14–23, then returns to normal records — designed to test whether trust recovers once behavior genuinely improves. Second, to move beyond three anecdotes, we run an aggregate sweep: 5,000 trials, each drawing one held-out record at random and replaying its label for 5 consecutive steps (simulating sustained behavior of a given type), recording the tier the engine settles on and whether that tier is appropriate given the ground-truth label.
+
+D. Robustness Checks: Cross-Validation, a Second Dataset, and Adversarial Perturbation
+
+Table III alone invites three fair questions, and we built a check for each rather than leaving them as acknowledged-but-untested limitations. First: are the headline numbers a single lucky (or unlucky) train/test split? We run stratified 5-fold cross-validation on the NSL-KDD training partition only — the held-out KDDTest+ set used throughout Section V is never touched by this check — for all four detectors, reporting mean ± standard deviation across folds (Section V-F).
+
+Second: do the detection and resource-cost patterns hold on traffic other than one 2009-vintage benchmark? We re-run the identical four-detector pipeline, unchanged, on a second and more recent public benchmark — a 56,661-record labeled sample of CICIDS2017 [11], covering DoS, PortScan, Brute-Force, Web-Attack, and Bot traffic captured on a realistic enterprise testbed — with an 75/25 stratified train/test split standardized the same way as NSL-KDD (Section V-G). This is a replication of the experimental design on independent traffic, not a cross-dataset transfer test: models are trained and tested within each dataset separately.
+
+Third: how much does the XGBoost detector that drives the trust engine resist an attacker actively trying to evade it? We run a black-box perturbation sweep: starting from attack connections XGBoost currently flags correctly, we add random Gaussian noise of increasing magnitude ε (in standard-deviation units) to the numeric traffic features only, and measure what fraction flip to “normal.” We are explicit that this is a weaker threat model than a gradient-based or query-optimized attack — a real adversary who can query the model and search for the specific perturbation direction that flips a decision would likely do better than random noise — so the results in Section V-H should be read as a lower bound on evasion vulnerability, not an upper one.
+
+V. RESULTS
+
+A. Detection Performance
+
+Table III reports the measured detection metrics for all four models on the 22,544-record NSL-KDD test set. XGBoost and Random Forest achieve the highest precision (96.8% both) and ROC-AUC (0.971 and 0.964 respectively), meaning that when either model flags a connection as an attack, it is very rarely wrong. Recall tells a different story: all three supervised models plateau around 62–67%, while the unsupervised autoencoder – trained without ever seeing an attack label – reaches 77.0% recall and the best overall F1-score (0.842). This is consistent with the test-set construction described in Section IV-A: a meaningful share of test-set attacks belong to categories the supervised models never saw during training, and an anomaly detector that simply asks “does this look like normal traffic” is, by construction, less dependent on having seen a labeled example of the specific attack in front of it.
+
+TABLE III. DETECTION PERFORMANCE ON THE NSL-KDD TEST SET (n = 22,544)
+
+Model
+
+Accuracy
+
+Precision
+
+Recall
+
+F1
+
+ROC-AUC
+
+FPR
+
+Random Forest
+
+77.4%
+
+96.8%
+
+62.4%
+
+0.759
+
+0.964
+
+2.7%
+
+XGBoost
+
+79.7%
+
+96.8%
+
+66.5%
+
+0.789
+
+0.971
+
+2.9%
+
+Logistic Regression
+
+75.4%
+
+91.7%
+
+62.3%
+
+0.742
+
+0.793
+
+7.4%
+
+Autoencoder (unsup.)
+
+83.6%
+
+92.9%
+
+77.0%
+
+0.842
+
+0.954
+
+7.8%
+
+Fig. 4. Detection performance comparison across all four candidate models (actual measured results).
+
+Fig. 5. ROC curves for all four candidate models on the NSL-KDD test set.
+
+Fig. 6. Confusion matrices for all four candidate models.
+
+B. Feature Importance
+
+Fig. 7 shows the fifteen most informative features by Random Forest Gini importance. The dominant signal comes from basic traffic-volume features (src_bytes, dst_bytes) and the SF connection-flag (a normal TCP termination), followed by host-based traffic-concentration features (dst_host_srv_count, same_srv_rate) that capture how a destination's recent connection history looks. This is a sanity check as much as a finding: it confirms the model is keying on traffic-behavior statistics consistent with the intrusion-detection literature [9, 11], rather than on some artifact specific to how the dataset was assembled.
+
+Fig. 7. Top 15 features by Random Forest Gini importance.
+
+C. System-Level Cost
+
+Fig. 8 reports the two system metrics that determine edge deployability. Random Forest's 200-tree ensemble costs 12.5 ms per sample and 4.1 MB serialized – not unreasonable on a server, but heavy for a constrained IoT gateway processing many concurrent flows. XGBoost is roughly 60× faster (0.21 ms/sample) and 17× smaller (241 KB) while matching or exceeding Random Forest on every detection metric in Table III, which is why we selected it to drive the trust engine in Section IV-C. Logistic Regression and the autoencoder are both lighter still, but neither matches XGBoost's combination of accuracy and calibrated probability output.
+
+Fig. 8. Per-sample inference latency and serialized model size, actual measurements (log scale).
+
+D. Trust-Engine Behavior
+
+Fig. 9 plots the three narrative device trajectories described in Section IV-C, driven by real XGBoost predictions on real held-out records. Device A (consistently normal traffic) ends the 40-step sequence at a trust score of 76.2, settling in the Monitor tier rather than a clean 100 – a reminder that even a well-behaved device occasionally produces a connection the classifier scores ambiguously, and the trust engine reacts to that rather than assuming perfection. Device B (compromised at step 12, attack-labeled traffic thereafter) falls to a final trust score of 46.4 (Re-authenticate tier), with visible noise reflecting genuine per-sample variation in the underlying model's confidence rather than a smooth synthetic decay curve. Device C (a 10-step attack burst from steps 14–23, then a return to normal traffic) is the scenario that most directly tests the asymmetric recovery design: trust falls sharply during the burst, and, once normal behavior resumes, climbs back to 93.2 (Allow tier) by the end of the sequence – recovering, as intended, more slowly than it fell.
+
+Fig. 9. Dynamic trust-score trajectories driven by real XGBoost predictions on held-out NSL-KDD records.
+
+E. Enforcement-Layer Effectiveness
+
+The aggregate sweep (5,000 trials, Section IV-C) gives a less anecdotal picture. Table IV and Fig. 10 summarize the result: sustained attack behavior is escalated to a restrictive tier (Restrict, Isolate, or Block) in 66.3% of trials, while sustained normal behavior is only ever falsely pushed out of the permissive tiers (Allow, Monitor) in 2.5% of trials. Both figures track the underlying XGBoost classifier's own recall (66.5%) and false-positive rate (2.9%) closely — which is the expected and, we think, reassuring result: the trust engine amplifies and enforces the detector's judgment rather than distorting it, so its aggregate behavior is bounded by detector quality rather than by some artifact of the trust-update arithmetic.
+
+TABLE IV. ENFORCEMENT-LAYER EFFECTIVENESS (n = 5,000 SIMULATED 5-STEP SEQUENCES)
+
+Outcome
+
+Rate
+
+Trials
+
+Comparable Classifier Statistic
+
+Sustained attack escalated to Restrict/Isolate/Block
+
+66.3%
+
+2,835 attack trials
+
+XGBoost recall: 66.5%
+
+Sustained normal traffic falsely restricted
+
+2.5%
+
+2,165 normal trials
+
+XGBoost false-positive rate: 2.9%
+
+Fig. 10. Enforcement-layer effectiveness over 5,000 simulated sequences drawn from real held-out predictions.
+
+F. Cross-Validation Robustness
+
+Table V and Fig. 11 report 5-fold cross-validation on the NSL-KDD training partition (Section IV-D). Random Forest and XGBoost are both essentially saturated in-distribution — 99.9% accuracy and F1 with negligible variance across folds — which rules out the held-out recall gap in Table III being a symptom of unstable or poorly-fit models; the fit is near-perfect whenever train and test data come from the same distribution. The gap only appears against KDDTest+'s deliberately shifted attack distribution (Section IV-A), which is exactly the interpretation offered in Section V-A. The autoencoder shows the most fold-to-fold variance (F1: 0.928 ± 0.010) of the four, consistent with it being the only model trained with early stopping on a reconstruction objective rather than directly on the classification labels.
+
+TABLE V. 5-FOLD CROSS-VALIDATION ON THE NSL-KDD TRAINING PARTITION (MEAN ± STD)
+
+Model
+
+Accuracy
+
+F1-score
+
+ROC-AUC
+
+Random Forest
+
+99.9% ± 0.0%
+
+0.999 ± 0.000
+
+1.000 ± 0.000
+
+XGBoost
+
+99.9% ± 0.0%
+
+0.999 ± 0.000
+
+1.000 ± 0.000
+
+Logistic Regression
+
+97.3% ± 0.2%
+
+0.971 ± 0.002
+
+0.996 ± 0.000
+
+Autoencoder (unsup.)
+
+93.4% ± 0.9%
+
+0.928 ± 0.010
+
+0.976 ± 0.007
+
+Fig. 11. 5-fold cross-validation results (mean ± std) on the NSL-KDD training partition.
+
+G. Generalization to a Second, Independent Dataset
+
+Table VI and Fig. 12 repeat the entire four-detector pipeline, unchanged, on a 56,661-record CICIDS2017 sample [11]. The picture is different in an informative way rather than a uniformly reassuring one. With a conventional stratified split (no deliberately held-out attack types, unlike NSL-KDD), Random Forest and XGBoost both exceed 99.6% accuracy and 0.996 F1 — the recall gap seen on NSL-KDD disappears entirely once the test set is not specifically constructed to contain novel attack types. Logistic Regression also improves substantially (F1 0.927). The autoencoder, however, is the clear loser on this dataset: F1 falls to 0.531, well below its NSL-KDD result. Our reading is that the autoencoder's fixed 95th-percentile reconstruction-error threshold, tuned on NSL-KDD's feature distribution, does not transfer to CICIDS2017's rather different traffic statistics (77 CICFlowMeter features vs. NSL-KDD's 41 hand-engineered ones) without being re-tuned — which is itself a useful, concrete finding: the autoencoder's novelty-detection advantage in Section V-A is real but threshold-sensitive, and would need per-deployment calibration rather than being treated as a universally safer default.
+
+TABLE VI. DETECTION PERFORMANCE ON CICIDS2017 SAMPLE (n = 14,166 TEST RECORDS)
+
+Model
+
+Accuracy
+
+Precision
+
+Recall
+
+F1
+
+ROC-AUC
+
+Latency
+
+Random Forest
+
+99.6%
+
+99.6%
+
+99.7%
+
+0.997
+
+1.000
+
+10.01 ms
+
+XGBoost
+
+99.8%
+
+99.7%
+
+99.9%
+
+0.998
+
+1.000
+
+0.20 ms
+
+Logistic Regression
+
+90.9%
+
+89.7%
+
+95.8%
+
+0.927
+
+0.956
+
+0.06 ms
+
+Autoencoder (unsup.)
+
+60.4%
+
+91.2%
+
+37.5%
+
+0.531
+
+0.780
+
+0.06 ms
+
+Fig. 12. F1-score and accuracy on NSL-KDD vs. CICIDS2017 for the same four detectors, same configurations.
+
+H. Adversarial Robustness: A Black-Box Evasion Sweep
+
+Fig. 13 sweeps the perturbation budget ε from 0 to 1.0 standard deviations of random Gaussian noise added to numeric features of connections XGBoost currently detects correctly (Section IV-D). The result is not a smooth, gradually-rising evasion curve: evasion jumps to roughly 20% at the smallest tested budget (ε = 0.05) and then stays essentially flat — between 20.3% and 22.0% — all the way out to ε = 1.0, a full standard deviation of undirected noise. We read this as evidence of two distinct populations within the detected-attack set: a minority (roughly one-fifth) sitting close enough to a decision boundary that almost any perturbation, however small, flips them, and a robust majority that undirected random noise essentially never dislodges, even at a magnitude large enough to meaningfully distort the underlying traffic features. This is consistent with how tree ensembles partition feature space — a sample's distance to the nearest split boundary, not its distance in the noise direction actually sampled, determines sensitivity — and it is also why we do not read this result as a clean bill of health: a real adversary who could query the model and search for that specific boundary-crossing direction, rather than hoping random noise finds it, would likely achieve a substantially higher evasion rate than the plateau reported here.
+
+Fig. 13. Evasion rate vs. perturbation budget for the XGBoost detector (black-box, undirected random noise).
+
+VI. DISCUSSION
+
+It is worth being direct about what these results do and do not show. They do not show a new state-of-the-art detector – Random Forest, XGBoost, logistic regression, and MLP-autoencoders are all established techniques, and nothing in Table III is a record-setting number on NSL-KDD. What the results do show is that the three pieces of the framework fit together honestly: the trust engine's aggregate behavior (66.3% attack escalation, 2.5% normal false-restriction, Section V-E) tracks the input classifier's own recall and false-positive rate almost exactly, rather than amplifying or distorting it unpredictably. That internal consistency is, in our view, the main empirical finding of this paper – it suggests the trust-scoring and enforcement layers add a useful enforcement mechanism on top of a detector without introducing hidden pathologies of their own.
+
+The recall gap across all three supervised models (62–67%, Table III) is worth dwelling on rather than smoothing over. It is tempting to read this as a weakness of the implementation, but it is largely a property of the dataset: NSL-KDD's test partition was deliberately built to include attack patterns absent from training [15], which penalizes any model that has only learned to recognize training-set attack signatures. The autoencoder's higher recall (77.0%) despite seeing zero attack labels during training supports this reading, and it is the empirical argument, not just the architectural one, for why the framework treats detection as a model-selection problem rather than committing to a single algorithm (Section III-B): a deployment that only ran XGBoost would miss more novel attacks than one that also watches for reconstruction-error anomalies. The cross-validation results in Section V-F reinforce this rather than merely padding the paper with an extra robustness check: Random Forest and XGBoost both fit the training distribution almost perfectly (99.9% F1, negligible variance across folds), which rules out underfitting or unstable training as the explanation for their lower held-out recall. The gap is entirely a train/test distribution-shift effect, not a modeling weakness — a distinction that matters because the fix for the former (more capacity, more tuning) would not have helped, while the fix the framework actually uses (keeping an unsupervised detector alongside the supervised ones) directly addresses the latter.
+
+The second-dataset check (Section V-G) complicates the autoencoder story in a way we think is more useful than a clean replication would have been. On CICIDS2017, where the test split is conventional rather than adversarially shifted, the recall gap that motivated keeping the autoencoder around simply does not appear — XGBoost alone reaches 99.9% recall — and the autoencoder is the weakest model on that dataset by a wide margin (F1 0.531). Taken together with the NSL-KDD result, the honest conclusion is not “autoencoders are better for novel attacks” as a general claim, but something narrower and more defensible: an unsupervised detector's value depends on whether the deployment is actually facing a train/test distribution shift, and its reconstruction-error threshold needs to be calibrated per-deployment rather than fixed once. A production version of NetSentry-Aegis would need either periodic re-calibration of that threshold or a held-out validation set representative of the live traffic, not a one-time setting carried over from a benchmark.
+
+The latency results (Fig. 8) have a direct bearing on deployability. At 0.21 ms per sample, XGBoost could plausibly run inline on an edge gateway processing thousands of flows per second; Random Forest's 12.5 ms per sample, 60× slower, starts to look difficult under similar load despite being only marginally behind on detection metrics. This is the concrete version of the abstract point made in Section I: a detector's accuracy on a benchmark is not the same question as whether it belongs in a production IoT security pipeline, and the two need to be measured together, not sequentially.
+
+The adversarial sweep (Section V-H) is the result we are least comfortable rounding up. A plateau at roughly 20–22% evasion under undirected random noise is not a robustness guarantee — it is a lower bound measured against a weak attacker. The flat shape of the curve (Fig. 13) is informative on its own terms — it suggests a fixed fraction of attacks sit near a decision boundary regardless of how much random noise is applied, rather than evasion risk scaling smoothly with how hard an attacker tries — but we did not test a gradient-based, query-optimized, or transfer attack, any of which would plausibly push past this plateau. We see this less as a weakness specific to our implementation and more as confirmation of a concern raised about trust-scoring mechanisms in general as far back as the original NIST Zero-Trust guidance [1]: a system that continuously verifies behavior is still only as hard to fool as the model computing that verification, and we would caution against reading Section V-E's 66.3% escalation rate as resistant to an adversary who specifically targets it.
+
+Several limitations remain even after these additional checks, and we list them because a paper that fixes three gaps and declares victory is not meaningfully more honest than one that fixed none. First, the second dataset (Section V-G) is enterprise traffic (CICIDS2017), not IoT-device traffic; N-BaIoT, which captures real IoT botnet behavior directly [12], remains untested, and it is the single most relevant benchmark we have not yet run given the paper's IoT framing. Second, the trust-engine parameters (ηₓ = 0.50, ηₑ = 0.15, and the six tier boundaries) are still hand-chosen to reflect the qualitative “fast distrust, slow recovery” principle, not tuned against a validation objective. Third, the adversarial check is black-box and undirected, as discussed above; a gradient-based attack against XGBoost, or a transfer attack crafted on a surrogate model, is the natural next step and would very likely report a higher evasion rate than Fig. 13 does. Fourth, the latency numbers in Fig. 8 were measured on the development machine used to run these experiments, not on representative IoT/edge hardware (e.g., a Raspberry Pi or ESP32-class device); relative ordering between models is likely to hold, but absolute numbers on constrained hardware will be worse.
+
+None of these limitations are, in our view, reasons to prefer the status quo of separate detection and access-control systems. They are a fairly specific to-do list — an IoT-native dataset, tuned trust parameters, a targeted adversarial evaluation, real hardware — for turning a working, now cross-validated and twice-replicated implementation into something closer to a deployable one.
+
+VII. CONCLUSION AND FUTURE WORK
+
+This paper set out to close a specific gap identified in the literature: that ML-based intrusion detection and Zero-Trust access control have mostly been developed, published, and evaluated as separate problems. We implemented NetSentry-Aegis — a pipeline that connects behavioral detection to a continuously-updated trust score and, in turn, to graduated enforcement — and evaluated it end-to-end on the NSL-KDD benchmark, rather than presenting the architecture alone. The detection layer reached 79.7% accuracy and 0.971 ROC-AUC with XGBoost at 0.21 ms per sample, well within reach of edge deployment; the unsupervised autoencoder's higher recall on attack types absent from training (77.0% vs. 62–67% for the supervised models) is itself evidence for why the framework deliberately keeps both detection paradigms rather than picking one; and the trust-and-enforcement layer, driven by real held-out predictions rather than illustrative data, escalates sustained malicious behavior to a restrictive tier in roughly two-thirds of cases while rarely restricting genuinely normal behavior. Three further checks — 5-fold cross-validation, a replication on an independent CICIDS2017 sample, and a black-box adversarial sweep — confirmed that the detection results are stable rather than a single lucky split, showed that the autoencoder's apparent advantage is dataset- and threshold-dependent rather than universal, and established a measured (if partial) lower bound on evasion resistance. We see this as a meaningfully more complete picture than the architecture-only proposal we started from, and also, honestly, as a picture with specific, nameable holes rather than a finished system.
+
+Having now replicated the pipeline once (CICIDS2017) and stress-tested it twice (cross-validation, adversarial perturbation), the most direct remaining step is narrower than it was before: N-BaIoT [12] specifically, since it is the one benchmark in our original scope that captures real IoT device and botnet behavior rather than simulated enterprise traffic, and Section VI-B's finding that the autoencoder's advantage is threshold-dependent makes this an empirical question worth settling rather than an assumption worth repeating. Beyond that, we see three concrete directions, each already motivated by a specific result rather than a generic call for more work: tuning the trust-engine's recovery and decay parameters against a validation objective instead of the hand-chosen defaults used throughout Section V; replacing the undirected noise in Section V-H with a gradient-based or transfer attack to get an honest upper bound on evasion risk rather than the lower bound reported here; and porting the pipeline to representative edge hardware to replace the development-machine latency figures in Fig. 8 with numbers measured where the system would actually run. Each of these is a bounded, specific piece of work rather than an open-ended aspiration, which is the standard we think a results-bearing paper should be held to when it lists what comes next.
+
+REFERENCES
+
+[1]  S. Rose, O. Borchert, S. Mitchell, and S. Connelly, “Zero Trust Architecture,” NIST Special Publication 800-207, National Institute of Standards and Technology, 2020.
+
+[2]  N. F. Syed, S. W. Shah, A. Shaghaghi, A. Anwar, Z. Baig, and R. Doss, “Zero Trust Architecture (ZTA): A Comprehensive Survey,” IEEE Access, vol. 10, pp. 57143–57179, 2022.
+
+[3]  C. Zanasi, S. Russo, and M. Colajanni, “Flexible Zero Trust Architecture for the Cybersecurity of Industrial IoT Infrastructures,” Ad Hoc Networks, vol. 156, Art. no. 103414, 2024.
+
+[4]  M. A. Azad, S. Abdullah, J. Arshad, H. Lallie, and Y. H. Ahmed, “Verify and Trust: A Multidimensional Survey of Zero-Trust Security in the Age of IoT,” Internet of Things, vol. 27, Art. no. 101227, 2024.
+
+[5]  K. Ramezanpour and J. Jagannath, “Intelligent Zero Trust Architecture for 5G/6G Networks: Principles, Challenges, and the Role of Machine Learning in the Context of O-RAN,” Computer Networks, vol. 217, Art. no. 109358, 2022.
+
+[6]  H. Kang, G. Liu, Q. Wang, L. Meng, and J. Liu, “Theory and Application of Zero Trust Security: A Brief Survey,” Entropy, vol. 25, no. 12, Art. no. 1595, 2023.
+
+[7]  B. McMahan, E. Moore, D. Ramage, S. Hampson, and B. A. y Arcas, “Communication-Efficient Learning of Deep Networks from Decentralized Data,” in Proc. 20th Int. Conf. Artificial Intelligence and Statistics (AISTATS), 2017.
+
+[8]  Y. Mirsky, T. Doitshman, Y. Elovici, and A. Shabtai, “Kitsune: An Ensemble of Autoencoders for Online Network Intrusion Detection,” in Proc. Network and Distributed System Security Symposium (NDSS), 2018.
+
+[9]  N. Shone, T. N. Ngoc, V. D. Phai, and Q. Shi, “A Deep Learning Approach to Network Intrusion Detection,” IEEE Transactions on Emerging Topics in Computational Intelligence, vol. 2, no. 1, pp. 41–50, 2018.
+
+[10]  N. Moustafa and J. Slay, “UNSW-NB15: A Comprehensive Data Set for Network Intrusion Detection Systems,” in Proc. Military Communications and Information Systems Conf. (MilCIS), 2015.
+
+[11]  I. Sharafaldin, A. H. Lashkari, and A. A. Ghorbani, “Toward Generating a New Intrusion Detection Dataset and Intrusion Traffic Characterization,” in Proc. 4th Int. Conf. Information Systems Security and Privacy (ICISSP), 2018, pp. 108–116.
+
+[12]  Y. Meidan, M. Bohadana, Y. Mathov, Y. Mirsky, A. Shabtai, D. Breitenbacher, and Y. Elovici, “N-BaIoT—Network-Based Detection of IoT Botnet Attacks Using Deep Autoencoders,” IEEE Pervasive Computing, vol. 17, no. 3, pp. 12–22, 2018.
+
+[13]  A. A. Diro and N. Chilamkurti, “Distributed Attack Detection Scheme Using Deep Learning Approach for Internet of Things,” Future Generation Computer Systems, vol. 82, pp. 761–768, 2018.
+
+[14]  M. A. Al-Garadi, A. Mohamed, A. K. Al-Ali, X. Du, I. Ali, and M. Guizani, “A Survey of Machine and Deep Learning Methods for Internet of Things (IoT) Security,” IEEE Communications Surveys & Tutorials, vol. 22, no. 3, pp. 1646–1685, 2020.
+
+[15]  M. Tavallaee, E. Bagheri, W. Lu, and A. A. Ghorbani, “A Detailed Analysis of the KDD CUP 99 Data Set,” in Proc. 2nd IEEE Symposium on Computational Intelligence for Security and Defense Applications (CISDA), Ottawa, ON, Canada, 2009, pp. 1–6.
+
+[16]  C. A. Baykara, I. Şafak, and K. Kalkan, “ZETROS: A Zero-Trust IoT Network Security Framework Using Distributed Blacklisting, Trust Scoring and Smart Contracts,” Computer Networks, vol. 271, Art. no. 111601, 2025.

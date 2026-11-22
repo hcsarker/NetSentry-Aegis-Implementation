@@ -1,0 +1,73 @@
+{
+  "UNSW-NB15": {
+    "dataset": "UNSW-NB15",
+    "n_train": 82332,
+    "n_test": 175341,
+    "features": 193,
+    "accuracy": 0.9005994034481382,
+    "precision": 0.9886553251884386,
+    "recall": 0.8638690810366931,
+    "f1": 0.9220593956685255,
+    "roc_auc": 0.9859286573169083,
+    "latency_ms": 0.0061964382399393135
+  },
+  "N-BaIoT": {
+    "dataset": "N-BaIoT (Device 1 - Danmini Doorbell)",
+    "n_train": 52500,
+    "n_test": 22500,
+    "features": 115,
+    "accuracy": 0.9999111111111111,
+    "precision": 0.9999166666666667,
+    "recall": 0.9999166666666667,
+    "f1": 0.9999166666666667,
+    "roc_auc": 0.999999865079365,
+    "latency_ms": 0.0005941920810275608
+  },
+  "CICIOT2023": {
+    "dataset": "CICIOT2023 (IoT Network Traffic)",
+    "n_train": 35000,
+    "n_test": 15000,
+    "features": 46,
+    "accuracy": 0.9946666666666667,
+    "precision": 0.9968647764449291,
+    "recall": 0.9976807639836289,
+    "f1": 0.99727260330015,
+    "roc_auc": 0.9990414091966936,
+    "latency_ms": 0.0006097952524820963
+  },
+  "CICIDS2017": {
+    "model": "XGBoost",
+    "accuracy": 0.9976704786107582,
+    "precision": 0.9972928436911488,
+    "recall": 0.9988211717552753,
+    "f1": 0.9980564226397314,
+    "roc_auc": 0.9997914699921834,
+    "false_positive_rate": 0.004047158191096252,
+    "confusion_matrix": {
+      "tn": 5660,
+      "fp": 23,
+      "fn": 10,
+      "tp": 8473
+    },
+    "latency_ms": 0.19676686516666564
+  },
+  "NSL-KDD": {
+    "model": "XGBoost",
+    "accuracy": 0.796930447125621,
+    "precision": 0.9683422217179167,
+    "recall": 0.6650042858256059,
+    "f1": 0.7885059595306292,
+    "roc_auc": 0.9707588985035404,
+    "false_positive_rate": 0.028730305838739572,
+    "confusion_matrix": {
+      "tn": 9432,
+      "fp": 279,
+      "fn": 4299,
+      "tp": 8534
+    },
+    "latency_ms": 0.20613214550000217,
+    "latency_std_ms": 0.0030342694079557317,
+    "train_time_s": 7.635534536000023,
+    "model_size_kb": 240.802734375
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "n_trials": 5000,
+  "attack_detection_and_escalation_rate": 0.884,
+  "normal_false_restriction_rate": 0.0564,
+  "intermittent_attack_restriction_rate": 0.886,
+  "transient_shock_false_isolation_rate": 0.0,
+  "attack_trials": 2500,
+  "normal_trials": 2500
+}

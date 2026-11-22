@@ -1,0 +1,46 @@
+{
+  "n_true_positives_tested": 8557,
+  "n_trials_per_epsilon": 20,
+  "sweep": [
+    {
+      "epsilon": 0.0,
+      "evasion_rate_mean": 0.0,
+      "evasion_rate_std": 0.0
+    },
+    {
+      "epsilon": 0.05,
+      "evasion_rate_mean": 0.18018581278485452,
+      "evasion_rate_std": 0.003995168488228198
+    },
+    {
+      "epsilon": 0.1,
+      "evasion_rate_mean": 0.17763819095477387,
+      "evasion_rate_std": 0.0025274595018225207
+    },
+    {
+      "epsilon": 0.2,
+      "evasion_rate_mean": 0.18761832417903473,
+      "evasion_rate_std": 0.0034196221875522955
+    },
+    {
+      "epsilon": 0.3,
+      "evasion_rate_mean": 0.19281874488722683,
+      "evasion_rate_std": 0.004395286971669005
+    },
+    {
+      "epsilon": 0.5,
+      "evasion_rate_mean": 0.19921117213976863,
+      "evasion_rate_std": 0.003881953864892944
+    },
+    {
+      "epsilon": 0.75,
+      "evasion_rate_mean": 0.2084725955358186,
+      "evasion_rate_std": 0.0034163107796740056
+    },
+    {
+      "epsilon": 1.0,
+      "evasion_rate_mean": 0.21452027579759264,
+      "evasion_rate_std": 0.0033186475584560666
+    }
+  ]
+}

@@ -1,0 +1,608 @@
+{
+  "Device A - Normal": [
+    {
+      "trust": 99.9999771118164,
+      "action": "Allow",
+      "threat_prob": 4.875011541116692e-07
+    },
+    {
+      "trust": 99.99996948242188,
+      "action": "Allow",
+      "threat_prob": 3.980808003234415e-07
+    },
+    {
+      "trust": 99.9998779296875,
+      "action": "Allow",
+      "threat_prob": 1.9994834019598784e-06
+    },
+    {
+      "trust": 99.99988555908203,
+      "action": "Allow",
+      "threat_prob": 5.886529379495187e-07
+    },
+    {
+      "trust": 99.99903869628906,
+      "action": "Allow",
+      "threat_prob": 1.8034252207144164e-05
+    },
+    {
+      "trust": 99.99917602539062,
+      "action": "Allow",
+      "threat_prob": 3.784263924444531e-07
+    },
+    {
+      "trust": 99.9992904663086,
+      "action": "Allow",
+      "threat_prob": 6.472823770309333e-07
+    },
+    {
+      "trust": 99.99928283691406,
+      "action": "Allow",
+      "threat_prob": 7.248116617120104e-06
+    },
+    {
+      "trust": 99.9993896484375,
+      "action": "Allow",
+      "threat_prob": 3.2507520586477767e-07
+    },
+    {
+      "trust": 99.99945068359375,
+      "action": "Allow",
+      "threat_prob": 1.841278617575881e-06
+    },
+    {
+      "trust": 99.99311828613281,
+      "action": "Allow",
+      "threat_prob": 0.00013210205361247063
+    },
+    {
+      "trust": 99.99407196044922,
+      "action": "Allow",
+      "threat_prob": 5.11704593009199e-06
+    },
+    {
+      "trust": 99.99495697021484,
+      "action": "Allow",
+      "threat_prob": 4.3081317357973603e-07
+    },
+    {
+      "trust": 99.99564361572266,
+      "action": "Allow",
+      "threat_prob": 4.803355295734946e-06
+    },
+    {
+      "trust": 99.99625396728516,
+      "action": "Allow",
+      "threat_prob": 2.7006876734958496e-06
+    },
+    {
+      "trust": 99.9968032836914,
+      "action": "Allow",
+      "threat_prob": 1.09805023384979e-06
+    },
+    {
+      "trust": 99.99727630615234,
+      "action": "Allow",
+      "threat_prob": 6.144275630504126e-07
+    },
+    {
+      "trust": 99.9976806640625,
+      "action": "Allow",
+      "threat_prob": 3.436872191286966e-07
+    },
+    {
+      "trust": 99.9980239868164,
+      "action": "Allow",
+      "threat_prob": 3.3916393249455723e-07
+    },
+    {
+      "trust": 99.99817657470703,
+      "action": "Allow",
+      "threat_prob": 9.632879482524004e-06
+    },
+    {
+      "trust": 99.99652099609375,
+      "action": "Allow",
+      "threat_prob": 5.1366772822802886e-05
+    },
+    {
+      "trust": 49.9992561340332,
+      "action": "Re-authenticate",
+      "threat_prob": 0.999980092048645
+    },
+    {
+      "trust": 57.49916458129883,
+      "action": "Re-authenticate",
+      "threat_prob": 1.3520391803467646e-05
+    },
+    {
+      "trust": 63.87425994873047,
+      "action": "Monitor",
+      "threat_prob": 2.0956783828296466e-06
+    },
+    {
+      "trust": 69.29310607910156,
+      "action": "Monitor",
+      "threat_prob": 1.1163187991769519e-06
+    },
+    {
+      "trust": 73.89625549316406,
+      "action": "Monitor",
+      "threat_prob": 0.00019217105000279844
+    },
+    {
+      "trust": 77.79700469970703,
+      "action": "Monitor",
+      "threat_prob": 0.0009874579263851047
+    },
+    {
+      "trust": 81.12741088867188,
+      "action": "Allow",
+      "threat_prob": 2.821093403326813e-06
+    },
+    {
+      "trust": 83.95828247070312,
+      "action": "Allow",
+      "threat_prob": 1.1672074151647394e-06
+    },
+    {
+      "trust": 86.3645248413086,
+      "action": "Allow",
+      "threat_prob": 1.2012062597932527e-06
+    },
+    {
+      "trust": 88.39503479003906,
+      "action": "Allow",
+      "threat_prob": 0.0009874579263851047
+    },
+    {
+      "trust": 90.13520050048828,
+      "action": "Allow",
+      "threat_prob": 3.8786365621490404e-05
+    },
+    {
+      "trust": 91.6148910522461,
+      "action": "Allow",
+      "threat_prob": 1.7854217730928212e-06
+    },
+    {
+      "trust": 92.87263488769531,
+      "action": "Allow",
+      "threat_prob": 1.4349527646118077e-06
+    },
+    {
+      "trust": 46.4373893737793,
+      "action": "Re-authenticate",
+      "threat_prob": 0.9999785423278809
+    },
+    {
+      "trust": 54.471763610839844,
+      "action": "Re-authenticate",
+      "threat_prob": 1.33347555220098e-06
+    },
+    {
+      "trust": 61.30098342895508,
+      "action": "Monitor",
+      "threat_prob": 1.0090170690091327e-06
+    },
+    {
+      "trust": 67.1058349609375,
+      "action": "Monitor",
+      "threat_prob": 1.6316280948558415e-07
+    },
+    {
+      "trust": 72.0399398803711,
+      "action": "Monitor",
+      "threat_prob": 1.4629782754127518e-06
+    },
+    {
+      "trust": 76.23373413085938,
+      "action": "Monitor",
+      "threat_prob": 1.4134244338492863e-05
+    }
+  ],
+  "Device B - Compromised & Sustained Attack": [
+    {
+      "trust": 99.99993896484375,
+      "action": "Allow",
+      "threat_prob": 1.2788126468876726e-06
+    },
+    {
+      "trust": 99.98329162597656,
+      "action": "Allow",
+      "threat_prob": 0.00033349203295074403
+    },
+    {
+      "trust": 99.98578643798828,
+      "action": "Allow",
+      "threat_prob": 8.459173272967746e-07
+    },
+    {
+      "trust": 99.9878921508789,
+      "action": "Allow",
+      "threat_prob": 1.7936065432877513e-06
+    },
+    {
+      "trust": 99.94061279296875,
+      "action": "Allow",
+      "threat_prob": 0.001066764467395842
+    },
+    {
+      "trust": 99.94951629638672,
+      "action": "Allow",
+      "threat_prob": 1.7667697704837337e-07
+    },
+    {
+      "trust": 99.95707702636719,
+      "action": "Allow",
+      "threat_prob": 8.353981684194878e-07
+    },
+    {
+      "trust": 99.92520141601562,
+      "action": "Allow",
+      "threat_prob": 0.001066764467395842
+    },
+    {
+      "trust": 49.963260650634766,
+      "action": "Re-authenticate",
+      "threat_prob": 0.9999867677688599
+    },
+    {
+      "trust": 57.46876525878906,
+      "action": "Re-authenticate",
+      "threat_prob": 3.978193205966818e-07
+    },
+    {
+      "trust": 63.84400939941406,
+      "action": "Monitor",
+      "threat_prob": 0.00029615696985274553
+    },
+    {
+      "trust": 69.26361846923828,
+      "action": "Monitor",
+      "threat_prob": 0.00025253850617446005
+    },
+    {
+      "trust": 73.87373352050781,
+      "action": "Monitor",
+      "threat_prob": 2.29353790928144e-05
+    },
+    {
+      "trust": 36.93696975708008,
+      "action": "Restrict",
+      "threat_prob": 0.9999979734420776
+    },
+    {
+      "trust": 18.471160888671875,
+      "action": "Isolate",
+      "threat_prob": 0.9999464750289917
+    },
+    {
+      "trust": 9.235795021057129,
+      "action": "Block",
+      "threat_prob": 0.9999957084655762
+    },
+    {
+      "trust": 22.497406005859375,
+      "action": "Isolate",
+      "threat_prob": 0.02353462018072605
+    },
+    {
+      "trust": 11.249674797058105,
+      "action": "Isolate",
+      "threat_prob": 0.9999805688858032
+    },
+    {
+      "trust": 24.455707550048828,
+      "action": "Isolate",
+      "threat_prob": 0.0071012042462825775
+    },
+    {
+      "trust": 12.227972984313965,
+      "action": "Isolate",
+      "threat_prob": 0.999997615814209
+    },
+    {
+      "trust": 25.342662811279297,
+      "action": "Restrict",
+      "threat_prob": 0.0034076401498168707
+    },
+    {
+      "trust": 15.780780792236328,
+      "action": "Isolate",
+      "threat_prob": 0.937811017036438
+    },
+    {
+      "trust": 7.941230297088623,
+      "action": "Block",
+      "threat_prob": 0.9989832043647766
+    },
+    {
+      "trust": 19.98493194580078,
+      "action": "Isolate",
+      "threat_prob": 0.1176743358373642
+    },
+    {
+      "trust": 31.480480194091797,
+      "action": "Restrict",
+      "threat_prob": 0.0337807834148407
+    },
+    {
+      "trust": 15.741325378417969,
+      "action": "Isolate",
+      "threat_prob": 0.9999783039093018
+    },
+    {
+      "trust": 7.880059242248535,
+      "action": "Block",
+      "threat_prob": 0.9998120665550232
+    },
+    {
+      "trust": 21.614139556884766,
+      "action": "Isolate",
+      "threat_prob": 0.005594196263700724
+    },
+    {
+      "trust": 12.17097282409668,
+      "action": "Isolate",
+      "threat_prob": 0.9727219343185425
+    },
+    {
+      "trust": 6.085515975952148,
+      "action": "Block",
+      "threat_prob": 0.9999994039535522
+    },
+    {
+      "trust": 19.989334106445312,
+      "action": "Isolate",
+      "threat_prob": 0.012223616242408752
+    },
+    {
+      "trust": 31.821266174316406,
+      "action": "Restrict",
+      "threat_prob": 0.011311274021863937
+    },
+    {
+      "trust": 15.935303688049316,
+      "action": "Isolate",
+      "threat_prob": 0.9995065927505493
+    },
+    {
+      "trust": 28.53788948059082,
+      "action": "Restrict",
+      "threat_prob": 0.000474640226457268
+    },
+    {
+      "trust": 14.270149230957031,
+      "action": "Isolate",
+      "threat_prob": 0.9999759197235107
+    },
+    {
+      "trust": 27.09046173095703,
+      "action": "Restrict",
+      "threat_prob": 0.0026109705213457346
+    },
+    {
+      "trust": 13.586289405822754,
+      "action": "Isolate",
+      "threat_prob": 0.9991788268089294
+    },
+    {
+      "trust": 26.4658145904541,
+      "action": "Restrict",
+      "threat_prob": 0.0055021909065544605
+    },
+    {
+      "trust": 37.477508544921875,
+      "action": "Restrict",
+      "threat_prob": 0.0012290382292121649
+    },
+    {
+      "trust": 46.41135025024414,
+      "action": "Re-authenticate",
+      "threat_prob": 0.029635488986968994
+    }
+  ],
+  "Device C - Attack Burst then Recovery": [
+    {
+      "trust": 99.97985076904297,
+      "action": "Allow",
+      "threat_prob": 0.0004029634001199156
+    },
+    {
+      "trust": 99.98284912109375,
+      "action": "Allow",
+      "threat_prob": 1.427481265636743e-06
+    },
+    {
+      "trust": 99.98536682128906,
+      "action": "Allow",
+      "threat_prob": 3.795667453232454e-06
+    },
+    {
+      "trust": 99.98749542236328,
+      "action": "Allow",
+      "threat_prob": 4.41916881754878e-06
+    },
+    {
+      "trust": 99.9893569946289,
+      "action": "Allow",
+      "threat_prob": 9.511156235930684e-07
+    },
+    {
+      "trust": 99.99081420898438,
+      "action": "Allow",
+      "threat_prob": 9.138340828940272e-06
+    },
+    {
+      "trust": 99.99214935302734,
+      "action": "Allow",
+      "threat_prob": 2.864207544917008e-06
+    },
+    {
+      "trust": 99.9932632446289,
+      "action": "Allow",
+      "threat_prob": 4.122715381527087e-06
+    },
+    {
+      "trust": 99.99359893798828,
+      "action": "Allow",
+      "threat_prob": 4.4936306949239224e-05
+    },
+    {
+      "trust": 99.99446868896484,
+      "action": "Allow",
+      "threat_prob": 5.934265118412441e-06
+    },
+    {
+      "trust": 99.99528503417969,
+      "action": "Allow",
+      "threat_prob": 1.1017581300620805e-06
+    },
+    {
+      "trust": 99.99597930908203,
+      "action": "Allow",
+      "threat_prob": 7.453933221768239e-07
+    },
+    {
+      "trust": 99.99655151367188,
+      "action": "Allow",
+      "threat_prob": 1.976426347027882e-06
+    },
+    {
+      "trust": 99.99706268310547,
+      "action": "Allow",
+      "threat_prob": 3.6687126225842803e-07
+    },
+    {
+      "trust": 49.99873352050781,
+      "action": "Re-authenticate",
+      "threat_prob": 0.9999959468841553
+    },
+    {
+      "trust": 24.9993896484375,
+      "action": "Isolate",
+      "threat_prob": 0.9999995231628418
+    },
+    {
+      "trust": 12.500386238098145,
+      "action": "Isolate",
+      "threat_prob": 0.9999861717224121
+    },
+    {
+      "trust": 25.241281509399414,
+      "action": "Restrict",
+      "threat_prob": 0.025603117421269417
+    },
+    {
+      "trust": 12.626773834228516,
+      "action": "Isolate",
+      "threat_prob": 0.9998773336410522
+    },
+    {
+      "trust": 6.313482284545898,
+      "action": "Block",
+      "threat_prob": 0.9999980926513672
+    },
+    {
+      "trust": 3.157349109649658,
+      "action": "Block",
+      "threat_prob": 0.9999878406524658
+    },
+    {
+      "trust": 1.5786864757537842,
+      "action": "Block",
+      "threat_prob": 0.9999997615814209
+    },
+    {
+      "trust": 15.965019226074219,
+      "action": "Isolate",
+      "threat_prob": 0.025124236941337585
+    },
+    {
+      "trust": 7.9826765060424805,
+      "action": "Block",
+      "threat_prob": 0.9999966621398926
+    },
+    {
+      "trust": 21.785259246826172,
+      "action": "Isolate",
+      "threat_prob": 1.053690994012868e-06
+    },
+    {
+      "trust": 33.49140548706055,
+      "action": "Restrict",
+      "threat_prob": 0.0017376876203343272
+    },
+    {
+      "trust": 43.467681884765625,
+      "action": "Re-authenticate",
+      "threat_prob": 7.470301284229208e-07
+    },
+    {
+      "trust": 51.94748306274414,
+      "action": "Re-authenticate",
+      "threat_prob": 3.0907144719094504e-06
+    },
+    {
+      "trust": 59.15516662597656,
+      "action": "Re-authenticate",
+      "threat_prob": 1.2960263120476156e-05
+    },
+    {
+      "trust": 65.28182983398438,
+      "action": "Monitor",
+      "threat_prob": 4.0070467548503075e-06
+    },
+    {
+      "trust": 70.48947143554688,
+      "action": "Monitor",
+      "threat_prob": 5.490294824994635e-06
+    },
+    {
+      "trust": 74.9160385131836,
+      "action": "Monitor",
+      "threat_prob": 1.0191843102802522e-06
+    },
+    {
+      "trust": 78.67859649658203,
+      "action": "Monitor",
+      "threat_prob": 2.7006876734958496e-06
+    },
+    {
+      "trust": 81.87678527832031,
+      "action": "Allow",
+      "threat_prob": 1.4239366237234208e-06
+    },
+    {
+      "trust": 84.59521484375,
+      "action": "Allow",
+      "threat_prob": 3.7046165743959136e-06
+    },
+    {
+      "trust": 86.90591430664062,
+      "action": "Allow",
+      "threat_prob": 1.254372477887955e-06
+    },
+    {
+      "trust": 88.86792755126953,
+      "action": "Allow",
+      "threat_prob": 0.0001399726897943765
+    },
+    {
+      "trust": 90.5377197265625,
+      "action": "Allow",
+      "threat_prob": 1.0792825833050301e-06
+    },
+    {
+      "trust": 91.9558334350586,
+      "action": "Allow",
+      "threat_prob": 8.187473576981574e-05
+    },
+    {
+      "trust": 93.1624526977539,
+      "action": "Allow",
+      "threat_prob": 4.603579952799919e-07
+    }
+  ]
+}

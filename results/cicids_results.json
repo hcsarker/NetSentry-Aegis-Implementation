@@ -1,0 +1,66 @@
+{
+  "Random Forest": {
+    "model": "Random Forest",
+    "accuracy": 0.9958350981222646,
+    "precision": 0.9963469243459816,
+    "recall": 0.9966992809147707,
+    "f1": 0.9965230714832931,
+    "roc_auc": 0.9995277738095149,
+    "false_positive_rate": 0.0054548653879992965,
+    "confusion_matrix": {
+      "tn": 5652,
+      "fp": 31,
+      "fn": 28,
+      "tp": 8455
+    },
+    "latency_ms": 10.013538593166672
+  },
+  "XGBoost": {
+    "model": "XGBoost",
+    "accuracy": 0.9976704786107582,
+    "precision": 0.9972928436911488,
+    "recall": 0.9988211717552753,
+    "f1": 0.9980564226397314,
+    "roc_auc": 0.9997914699921834,
+    "false_positive_rate": 0.004047158191096252,
+    "confusion_matrix": {
+      "tn": 5660,
+      "fp": 23,
+      "fn": 10,
+      "tp": 8473
+    },
+    "latency_ms": 0.19676686516666564
+  },
+  "Logistic Regression": {
+    "model": "Logistic Regression",
+    "accuracy": 0.909431032048567,
+    "precision": 0.8974387281960697,
+    "recall": 0.9582694801367441,
+    "f1": 0.9268570777036657,
+    "roc_auc": 0.9555925775431166,
+    "false_positive_rate": 0.163469998240366,
+    "confusion_matrix": {
+      "tn": 4754,
+      "fp": 929,
+      "fn": 354,
+      "tp": 8129
+    },
+    "latency_ms": 0.05547256133332704
+  },
+  "Autoencoder (unsupervised)": {
+    "model": "Autoencoder (unsupervised)",
+    "accuracy": 0.6039107722716364,
+    "precision": 0.9121699196326062,
+    "recall": 0.37463161617352353,
+    "f1": 0.531127266649954,
+    "roc_auc": 0.7798964937773197,
+    "false_positive_rate": 0.05384480028154144,
+    "confusion_matrix": {
+      "tn": 5377,
+      "fp": 306,
+      "fn": 5305,
+      "tp": 3178
+    },
+    "latency_ms": 0.05498504433334498
+  }
+}

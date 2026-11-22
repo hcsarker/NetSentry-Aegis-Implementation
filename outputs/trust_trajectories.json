@@ -1,0 +1,970 @@
+{
+  "Device A - Normal": [
+    {
+      "trust": 99.984,
+      "action": "Allow",
+      "threat_prob": 0.0003,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.986,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.988,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.99,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 94.48,
+      "action": "Allow",
+      "threat_prob": 0.1103,
+      "alpha": 1.0
+    },
+    {
+      "trust": 95.306,
+      "action": "Allow",
+      "threat_prob": 0.0002,
+      "alpha": 1.0
+    },
+    {
+      "trust": 96.01,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 96.608,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 97.117,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 48.559,
+      "action": "Re-authenticate",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 56.275,
+      "action": "Re-authenticate",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 62.827,
+      "action": "Monitor",
+      "threat_prob": 0.0005,
+      "alpha": 1.0
+    },
+    {
+      "trust": 68.403,
+      "action": "Monitor",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 73.143,
+      "action": "Monitor",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 77.171,
+      "action": "Monitor",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 80.595,
+      "action": "Allow",
+      "threat_prob": 0.0001,
+      "alpha": 1.0
+    },
+    {
+      "trust": 83.505,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 85.98,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 88.083,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 89.867,
+      "action": "Allow",
+      "threat_prob": 0.0002,
+      "alpha": 1.0
+    },
+    {
+      "trust": 91.387,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 92.679,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 93.772,
+      "action": "Allow",
+      "threat_prob": 0.0003,
+      "alpha": 1.0
+    },
+    {
+      "trust": 94.706,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 95.5,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 96.175,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 96.749,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 97.236,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 97.651,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 98.0,
+      "action": "Allow",
+      "threat_prob": 0.0002,
+      "alpha": 1.0
+    },
+    {
+      "trust": 98.3,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 98.555,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 98.772,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 98.955,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.112,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.245,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.358,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.455,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.536,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.606,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    }
+  ],
+  "Device B - Compromised & Sustained Attack": [
+    {
+      "trust": 100.0,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 100.0,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 100.0,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 50.0,
+      "action": "Re-authenticate",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 57.497,
+      "action": "Re-authenticate",
+      "threat_prob": 0.0002,
+      "alpha": 1.0
+    },
+    {
+      "trust": 63.873,
+      "action": "Monitor",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 69.292,
+      "action": "Monitor",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 73.898,
+      "action": "Monitor",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 77.813,
+      "action": "Monitor",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 81.14,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 83.969,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 86.374,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 43.187,
+      "action": "Re-authenticate",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 21.594,
+      "action": "Isolate",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 10.797,
+      "action": "Isolate",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 5.399,
+      "action": "Block",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 2.7,
+      "action": "Block",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 17.295,
+      "action": "Isolate",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 8.647,
+      "action": "Block",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 11.03,
+      "action": "Isolate",
+      "threat_prob": 0.7547,
+      "alpha": 1.0
+    },
+    {
+      "trust": 24.374,
+      "action": "Isolate",
+      "threat_prob": 0.0001,
+      "alpha": 1.0
+    },
+    {
+      "trust": 12.187,
+      "action": "Isolate",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 6.094,
+      "action": "Block",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 3.048,
+      "action": "Block",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 17.063,
+      "action": "Isolate",
+      "threat_prob": 0.0352,
+      "alpha": 1.0
+    },
+    {
+      "trust": 8.531,
+      "action": "Block",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 4.266,
+      "action": "Block",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 18.605,
+      "action": "Isolate",
+      "threat_prob": 0.0014,
+      "alpha": 1.0
+    },
+    {
+      "trust": 30.679,
+      "action": "Restrict",
+      "threat_prob": 0.009,
+      "alpha": 1.0
+    },
+    {
+      "trust": 15.339,
+      "action": "Isolate",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 27.851,
+      "action": "Restrict",
+      "threat_prob": 0.0125,
+      "alpha": 1.0
+    },
+    {
+      "trust": 13.926,
+      "action": "Isolate",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 6.963,
+      "action": "Block",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 3.482,
+      "action": "Block",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 1.743,
+      "action": "Block",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 0.872,
+      "action": "Block",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 13.262,
+      "action": "Isolate",
+      "threat_prob": 0.1652,
+      "alpha": 1.0
+    },
+    {
+      "trust": 6.631,
+      "action": "Block",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 3.316,
+      "action": "Block",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 17.041,
+      "action": "Isolate",
+      "threat_prob": 0.0518,
+      "alpha": 1.0
+    }
+  ],
+  "Device C - Attack Burst then Recovery": [
+    {
+      "trust": 100.0,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 100.0,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.998,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.998,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.999,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.977,
+      "action": "Allow",
+      "threat_prob": 0.0004,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.981,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.983,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.986,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.988,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.989,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.991,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.992,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 99.993,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 49.997,
+      "action": "Re-authenticate",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 27.538,
+      "action": "Restrict",
+      "threat_prob": 0.9492,
+      "alpha": 1.0
+    },
+    {
+      "trust": 38.398,
+      "action": "Restrict",
+      "threat_prob": 0.0006,
+      "alpha": 1.0
+    },
+    {
+      "trust": 19.199,
+      "action": "Isolate",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 29.453,
+      "action": "Restrict",
+      "threat_prob": 0.1245,
+      "alpha": 1.0
+    },
+    {
+      "trust": 39.727,
+      "action": "Restrict",
+      "threat_prob": 0.0205,
+      "alpha": 1.0
+    },
+    {
+      "trust": 48.75,
+      "action": "Re-authenticate",
+      "threat_prob": 0.0012,
+      "alpha": 1.0
+    },
+    {
+      "trust": 24.375,
+      "action": "Isolate",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 12.188,
+      "action": "Isolate",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 6.094,
+      "action": "Block",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 20.18,
+      "action": "Isolate",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 32.153,
+      "action": "Restrict",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 42.33,
+      "action": "Re-authenticate",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 50.98,
+      "action": "Re-authenticate",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 58.333,
+      "action": "Re-authenticate",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 64.583,
+      "action": "Monitor",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 69.895,
+      "action": "Monitor",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 74.411,
+      "action": "Monitor",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 78.249,
+      "action": "Monitor",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 81.511,
+      "action": "Allow",
+      "threat_prob": 0.0001,
+      "alpha": 1.0
+    },
+    {
+      "trust": 84.279,
+      "action": "Allow",
+      "threat_prob": 0.0004,
+      "alpha": 1.0
+    },
+    {
+      "trust": 86.637,
+      "action": "Allow",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 87.726,
+      "action": "Allow",
+      "threat_prob": 0.061,
+      "alpha": 1.0
+    },
+    {
+      "trust": 43.863,
+      "action": "Re-authenticate",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 52.284,
+      "action": "Re-authenticate",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 59.441,
+      "action": "Re-authenticate",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    }
+  ],
+  "Device D - Intermittent Pulsing Attack": [
+    {
+      "trust": 50.008,
+      "action": "Re-authenticate",
+      "threat_prob": 0.9998,
+      "alpha": 1.0
+    },
+    {
+      "trust": 25.004,
+      "action": "Restrict",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 12.502,
+      "action": "Isolate",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 25.626,
+      "action": "Restrict",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 36.782,
+      "action": "Restrict",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 46.265,
+      "action": "Re-authenticate",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 54.325,
+      "action": "Re-authenticate",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 61.176,
+      "action": "Monitor",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 30.588,
+      "action": "Restrict",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 15.294,
+      "action": "Isolate",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 7.647,
+      "action": "Block",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 21.5,
+      "action": "Isolate",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 33.275,
+      "action": "Restrict",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 43.284,
+      "action": "Re-authenticate",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 51.788,
+      "action": "Re-authenticate",
+      "threat_prob": 0.0002,
+      "alpha": 1.0
+    },
+    {
+      "trust": 59.0,
+      "action": "Re-authenticate",
+      "threat_prob": 0.0013,
+      "alpha": 1.0
+    },
+    {
+      "trust": 29.5,
+      "action": "Restrict",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 14.751,
+      "action": "Isolate",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 8.403,
+      "action": "Block",
+      "threat_prob": 0.9794,
+      "alpha": 1.0
+    },
+    {
+      "trust": 22.143,
+      "action": "Isolate",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 33.821,
+      "action": "Restrict",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 43.748,
+      "action": "Re-authenticate",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 52.186,
+      "action": "Re-authenticate",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 59.358,
+      "action": "Re-authenticate",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 29.679,
+      "action": "Restrict",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 39.224,
+      "action": "Restrict",
+      "threat_prob": 0.0669,
+      "alpha": 1.0
+    },
+    {
+      "trust": 43.239,
+      "action": "Re-authenticate",
+      "threat_prob": 0.3401,
+      "alpha": 1.0
+    },
+    {
+      "trust": 51.753,
+      "action": "Re-authenticate",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 58.99,
+      "action": "Re-authenticate",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 65.141,
+      "action": "Monitor",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 70.369,
+      "action": "Monitor",
+      "threat_prob": 0.0001,
+      "alpha": 1.0
+    },
+    {
+      "trust": 74.814,
+      "action": "Monitor",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 37.407,
+      "action": "Restrict",
+      "threat_prob": 1.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 46.488,
+      "action": "Re-authenticate",
+      "threat_prob": 0.0205,
+      "alpha": 1.0
+    },
+    {
+      "trust": 54.379,
+      "action": "Re-authenticate",
+      "threat_prob": 0.009,
+      "alpha": 1.0
+    },
+    {
+      "trust": 61.222,
+      "action": "Monitor",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 67.039,
+      "action": "Monitor",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 71.983,
+      "action": "Monitor",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 76.185,
+      "action": "Monitor",
+      "threat_prob": 0.0,
+      "alpha": 1.0
+    },
+    {
+      "trust": 38.097,
+      "action": "Restrict",
+      "threat_prob": 0.9999,
+      "alpha": 1.0
+    }
+  ]
+}
